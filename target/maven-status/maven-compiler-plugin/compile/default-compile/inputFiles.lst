@@ -1,0 +1,6 @@
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/controller/SimilarProductsController.java
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/service/SimilarProdsService.java
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/model/dtos/ProductDetailDto.java
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/BackendDevTestApplication.java
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/model/dtos/SimilarProdsResponseDto.java
+/home/laura/Escritorio/AMS_Solutions/BackendDevTest/src/main/java/com/AMS/backendDevTest/config/SpringFoxConfig.java
