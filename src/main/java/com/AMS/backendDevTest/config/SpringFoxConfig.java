@@ -25,6 +25,6 @@ public class SpringFoxConfig {
           .apiInfo(new ApiInfo("Similar Products Backend API",
 				"Backend Developer Test",
 				"1.0",
-				"http://product/", null, null, null,Collections.emptyList()));                                           
+				null, null, null, null,Collections.emptyList()));                                           
     }
 }
