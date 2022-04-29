@@ -1,48 +1,55 @@
 package com.AMS.backendDevTest.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.AMS.backendDevTest.model.dtos.ProductDetailDto;
-import com.AMS.backendDevTest.model.dtos.SimilarProdsResponseDto;
 
-import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-@Slf4j
 @Service
 public class SimilarProdsService {
-	
-	public SimilarProdsResponseDto getSimilarProds(String id){
-		return new SimilarProdsResponseDto(getSimilarProducts(getSimilarIds(id)));
-	}
 
-	private String[] getSimilarIds(String id) {
-		String url = "http://localhost:3001/product/" + id + "/similarids";
-		return new RestTemplate().getForObject(url, String[].class);
+	public Flux<ProductDetailDto> getSimilarProds(String id){
+		
+		String[] similarIds = getSimilarIds(id).block();
+		
+		Flux<ProductDetailDto> similarProducts = getSimilarProductsDetail(similarIds);
+		
+		return similarProducts;
 	}
 	
-	private ProductDetailDto[] getSimilarProducts(String[] similarIds){
-		List<ProductDetailDto> products = new ArrayList<ProductDetailDto>();
-		for(String id : similarIds) {
-			try {
-				products.add(getProductDetail(id));
-			}catch (HttpClientErrorException e) {
-				log.info("Product id=" + id + " not found - it won't be shown");
-			}catch (HttpServerErrorException e){
-				log.info("Product id=" + id + " problems retrieving info - it won't be shown");
-			}
-		}
-		return products.toArray(new ProductDetailDto[0]);
+	private Mono<String[]> getSimilarIds(String id) {
+		WebClient client = WebClient.create();
+		String url = "http://localhost:3001/product/" + id + "/similarids";
+		
+		Mono<String[]> similarIds = client.get()
+				.uri(url)
+				.retrieve()
+				.bodyToMono(String[].class);
+		
+		return similarIds;
+	}
+	
+	private Flux<ProductDetailDto> getSimilarProductsDetail(String[] similarIds){
+		List<String> idsToSearch = Arrays.asList(similarIds);
+		Flux<ProductDetailDto> products = Flux.fromIterable(idsToSearch.stream().map(id -> getProductDetail(id)).toList());
+		
+		return products;
 	}
 
 	private ProductDetailDto getProductDetail(String id) throws HttpClientErrorException{
+		WebClient client = WebClient.create();
 		String url = "http://localhost:3001/product/" + id;
-		ProductDetailDto productDetail = new RestTemplate().getForObject(url, ProductDetailDto.class);
+		ProductDetailDto productDetail = client.get()
+				.uri(url)
+				.retrieve()
+				.bodyToMono(ProductDetailDto.class)
+				.block();
 		
 		return productDetail;
 	}
