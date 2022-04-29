@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.AMS.backendDevTest.model.dtos.ProductDetailDto;
-import com.AMS.backendDevTest.model.dtos.SimilarProdsResponseDto;
+
+import reactor.core.publisher.Flux;
 
 @SpringBootTest
 class SimilarProdsServiceTest {
@@ -23,16 +27,15 @@ class SimilarProdsServiceTest {
 	ProductDetailDto product2=new ProductDetailDto("2","Dress",19.99,true);
 	ProductDetailDto product3=new ProductDetailDto("3","Blazer",29.99,false);
 	ProductDetailDto product4=new ProductDetailDto("4","Boots",39.99,true);
-	SimilarProdsResponseDto expected = new SimilarProdsResponseDto();
 
 	@Test
 	public void whenGetSimilarProds_WithValidIdAndExistingProds_shouldReturnAllSimilarProdsDetail() {
-		ProductDetailDto[] similarProducts = new ProductDetailDto[3];
-		similarProducts[0] = product2;
-		similarProducts[1] = product3;
-		similarProducts[2] = product4;
+		List<ProductDetailDto> similarProducts = new ArrayList<ProductDetailDto>();
+		similarProducts.add(product2);
+		similarProducts.add(product3);
+		similarProducts.add(product4);
 		
-		expected.setSimilarProducts(similarProducts);
+		Flux<ProductDetailDto> expected = Flux.fromIterable(similarProducts);
 		
 		assertEquals(expected.toString(), similarProdsService.getSimilarProds("1").toString());
 	}
@@ -52,22 +55,22 @@ class SimilarProdsServiceTest {
 	
 	@Test
 	public void whenGetSimilarProds_ProductNotFound_shouldReturnAllProdsExceptMissingOnes() {
-		ProductDetailDto[] similarProducts = new ProductDetailDto[2];
-		similarProducts[0] = product1;
-		similarProducts[1] = product2;
+		List<ProductDetailDto> similarProducts = new ArrayList<ProductDetailDto>();
+		similarProducts.add(product1);
+		similarProducts.add(product2);
 		
-		expected.setSimilarProducts(similarProducts);
+		Flux<ProductDetailDto> expected = Flux.fromIterable(similarProducts);
 		
 		assertEquals(expected.toString(), similarProdsService.getSimilarProds("4").toString());
 	}
 	
 	@Test
 	public void whenGetSimilarProds_whenClientServerError_shouldReturnAllProdsExceptProblematicOnes() {
-		ProductDetailDto[] similarProducts = new ProductDetailDto[2];
-		similarProducts[0] = product1;
-		similarProducts[1] = product2;
+		List<ProductDetailDto> similarProducts = new ArrayList<ProductDetailDto>();
+		similarProducts.add(product1);
+		similarProducts.add(product2);
 		
-		expected.setSimilarProducts(similarProducts);
+		Flux<ProductDetailDto> expected = Flux.fromIterable(similarProducts);;
 		
 		assertEquals(expected.toString(), similarProdsService.getSimilarProds("5").toString());
 	}
