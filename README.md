@@ -1,14 +1,8 @@
 # Similar Products API
 
-## Using .jar file:
+## Spring Boot Maven Proyect
 
-- compiled with Java 17, min mayor version required 61
-
-```
-java -jar java -jar target/backendDevTest-0.0.1-SNAPSHOT.jar
-```
-
-## Using Dockerfile:
+### Using Docker:
 
 ```
 docker build -t similar_products .
@@ -17,6 +11,16 @@ docker build -t similar_products .
 ```
 docker run similar_products
 ```
+
+
+### Using .jar file:
+
+- compiled with Java 17, min mayor version required 61
+
+```
+java -jar java -jar target/backendDevTest-0.0.1-SNAPSHOT.jar
+```
+
 
 
 ***

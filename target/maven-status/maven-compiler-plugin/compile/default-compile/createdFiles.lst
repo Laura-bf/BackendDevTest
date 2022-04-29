@@ -1,6 +1,0 @@
-com/AMS/backendDevTest/BackendDevTestApplication.class
-com/AMS/backendDevTest/controller/SimilarProductsController.class
-com/AMS/backendDevTest/model/dtos/SimilarProdsResponseDto.class
-com/AMS/backendDevTest/model/dtos/ProductDetailDto.class
-com/AMS/backendDevTest/config/SpringFoxConfig.class
-com/AMS/backendDevTest/service/SimilarProdsService.class
