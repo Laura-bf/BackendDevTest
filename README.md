@@ -18,7 +18,7 @@ docker run similar_products
 - compiled with Java 17, min mayor version required 61
 
 ```
-java -jar java -jar target/backendDevTest-0.0.1-SNAPSHOT.jar
+java -jar target/backendDevTest-0.0.1-SNAPSHOT.jar
 ```
 
 
