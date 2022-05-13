@@ -22,7 +22,7 @@ import reactor.core.publisher.Flux;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = SimilarProductsController.class)
-class SimilarProductsControllerTest {
+class SimilarProductsControllerIntegrationTest {
 
 	@Autowired
 	private WebTestClient webTestClient;
